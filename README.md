@@ -11,23 +11,23 @@ Participants open the web UI, propose words, and use their browser to mine votes
 
 StoryCoin is split across three runtime pieces plus a small browser client:
 
-1. **Rust blockchain node** (`/home/runner/work/StoryCoin/StoryCoin/src/server.rs`)
+1. **Rust blockchain node** (`src/server.rs`)
    - Maintains the authoritative `Blockchain` and in-memory vote state.
    - Accepts JSON commands such as `get_story`, `get_blocks`, `get_votes`, `set_blocks`, `set_votes`, and `choose_next_word`.
    - Stores one block per accepted story word.
    - Validates vote chains with a proof-of-work rule before accepting them.
 
-2. **Python web server** (`/home/runner/work/StoryCoin/StoryCoin/webserver.py`)
+2. **Python web server** (`webserver.py`)
    - Serves the Bottle application and the browser UI from `static/index.html`.
    - Accepts WebSocket connections at `/websocket/<name>`.
    - Relays messages between browsers and the Rust node through Redis queues.
 
-3. **Python mesh-network wrapper** (`/home/runner/work/StoryCoin/StoryCoin/network.py`)
+3. **Python mesh-network wrapper** (`network.py`)
    - Starts the Rust node as a subprocess.
    - Connects to the `mesh-networking` library so nodes can exchange messages over UDP.
    - Uses `RedisProgram` to bridge network messages into Redis-backed queues.
 
-4. **Browser client** (`/home/runner/work/StoryCoin/StoryCoin/static/index.html` and `/home/runner/work/StoryCoin/StoryCoin/static/js/`)
+4. **Browser client** (`static/index.html` and `static/js/`)
    - Displays the current story and proposed words.
    - Mines votes in the browser using JavaScript hashing.
    - Sends vote updates and story requests over a WebSocket.
@@ -53,16 +53,16 @@ Other peers
 
 ## Repository layout
 
-- `/home/runner/work/StoryCoin/StoryCoin/src/lib.rs` - Rust library root
-- `/home/runner/work/StoryCoin/StoryCoin/src/server.rs` - Rust node executable
-- `/home/runner/work/StoryCoin/StoryCoin/src/blockchain.rs` - story blockchain logic
-- `/home/runner/work/StoryCoin/StoryCoin/src/wordvote.rs` - vote-chain logic and proof-of-work checks
-- `/home/runner/work/StoryCoin/StoryCoin/src/hash_utils.rs` - SHA-512 helpers
-- `/home/runner/work/StoryCoin/StoryCoin/src/io_queue.rs` - Redis queue helpers
-- `/home/runner/work/StoryCoin/StoryCoin/webserver.py` - Bottle + WebSocket server
-- `/home/runner/work/StoryCoin/StoryCoin/network.py` - mesh-network entry point
-- `/home/runner/work/StoryCoin/StoryCoin/static/` - HTML, JS, and CSS assets
-- `/home/runner/work/StoryCoin/StoryCoin/tests/tests.rs` - Rust tests for hashing and blockchain behavior
+- `src/lib.rs` - Rust library root
+- `src/server.rs` - Rust node executable
+- `src/blockchain.rs` - story blockchain logic
+- `src/wordvote.rs` - vote-chain logic and proof-of-work checks
+- `src/hash_utils.rs` - SHA-512 helpers
+- `src/io_queue.rs` - Redis queue helpers
+- `webserver.py` - Bottle + WebSocket server
+- `network.py` - mesh-network entry point
+- `static/` - HTML, JS, and CSS assets
+- `tests/tests.rs` - Rust tests for hashing and blockchain behavior
 
 ## Prerequisites
 
